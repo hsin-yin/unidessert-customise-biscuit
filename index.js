@@ -88,8 +88,6 @@ app.get('/shippingqa', function (req, res) {
 app.get('/customize', function (req, res) {
     conn.query(`SELECT * FROM customize `,
         function (err, bee) {
-            // console.log(bee);
-            //回傳網頁給使用者
             res.render('customize.ejs', {
                 cat: bee
             })
@@ -106,7 +104,6 @@ app.post('/customize', auth_product, function (req, res) {
             });
             return;
         }
-
         var uid = results[0].uid
         var number = req.body.number
 
@@ -146,15 +143,12 @@ app.post('/customize', auth_product, function (req, res) {
                         return;
                     }
 
-                    const insert_cdetailid = data.insertId  // insert 完的 cdetailid
+                    const insert_cdetailid = data.insertId
+
                     const currentDate = new Date();
-
-                    // 使用 Date 物件的方法獲取年、月、日等資訊
-                    const year = currentDate.getFullYear(); // 取得年份，例如 2023
-                    const month = currentDate.getMonth() + 1; // 月份是從 0 開始的，因此需要加 1，例如 7 (代表 8 月)
-                    const day = currentDate.getDate(); // 取得當月的幾號，例如 20
-
-                    // 將取得的年、月、日組合成字串表示現在的日期
+                    const year = currentDate.getFullYear();
+                    const month = currentDate.getMonth() + 1;
+                    const day = currentDate.getDate();
                     const formattedDate = `${year}-${month}-${day}`;
 
                     conn.query(`INSERT INTO orderlist (oid, uid, deliever_fee, order_total, order_date, recipient, recipient_address, recipient_phone, recipient_email, arrive_date, payment_type, order_status) 
@@ -254,6 +248,7 @@ app.post('/customize', auth_product, function (req, res) {
                                 msg: 'insert success'
                             });
                         });
+                        return;
                     });
                 });
             });
